@@ -1,4 +1,5 @@
-package dev.andrescoder.gamingapp.presentation.screens.login.components
+package dev.andrescoder.gamingapp.presentation.screens.signup.components
+
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,11 +13,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,17 +33,21 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import dev.andrescoder.gamingapp.R
 import dev.andrescoder.gamingapp.presentation.components.DefaultButton
 import dev.andrescoder.gamingapp.presentation.components.DefaultTextField
 import dev.andrescoder.gamingapp.presentation.screens.login.LoginViewModel
+import dev.andrescoder.gamingapp.presentation.screens.signup.SignupViewModel
 import dev.andrescoder.gamingapp.presentation.ui.theme.Darkgray500
 import dev.andrescoder.gamingapp.presentation.ui.theme.Red500
+import dev.andrescoder.gamingapp.presentation.ui.theme.Red700
 
 @Composable
-fun LoginContent(
+fun SignupContent(
     paddingValues: PaddingValues,
-    viewModel: LoginViewModel = hiltViewModel<LoginViewModel>() // Injección de dependencias con Dagger Hilt
+    navController: NavHostController?,
+    viewModel: SignupViewModel= hiltViewModel<SignupViewModel>()
 ) {
     Box(
         modifier = Modifier
@@ -46,25 +57,20 @@ fun LoginContent(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(350.dp)
+                .height(320.dp)
                 .background(Red500)
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 50.dp),
+                    .padding(top = 80.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
                     modifier = Modifier
                         .height(130.dp),
-                    painter = painterResource(id = R.drawable.control),
-                    contentDescription = "Mando Xbox 360"
-                )
-                Text(
-                    text = "Gaming App",
-                    fontSize = 40.sp,
-                    fontWeight = FontWeight.ExtraBold
+                    painter = painterResource(id = R.drawable.user),
+                    contentDescription = "icon user"
                 )
             }
         }
@@ -73,7 +79,7 @@ fun LoginContent(
                 .padding(
                     start = 30.dp,
                     end = 30.dp,
-                    top = 280.dp,
+                    top = 240.dp,
                     bottom = 30.dp
                 ),
             colors = CardDefaults.cardColors(
@@ -82,30 +88,54 @@ fun LoginContent(
             shape = RoundedCornerShape(16.dp)
         ) {
             Column(
-                modifier = Modifier.padding(top = 25.dp, bottom = 20.dp)
+                modifier = Modifier.padding(top = 20.dp, bottom = 20.dp)
             ) {
                 Text(
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    text = "ACCESO",
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally),
+                    text = "REGISTRO",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    text = "Por favor inicia sesión para continuar",
+                    modifier = Modifier
+                        .padding(
+                            start = 20.dp,
+                            end = 20.dp
+                        )
+                        .align(Alignment.CenterHorizontally),
+                    text = "Rellena la información para crear una cuenta",
                     fontSize = 18.sp,
                     color = Color.White
                 )
                 DefaultTextField(
                     modifier = Modifier
                         .padding(
-                            top = 25.dp,
+                            top = 10.dp,
                             start = 20.dp,
-                            end = 30.dp
+                            end = 20.dp
                         ),
-                    value = viewModel?.email?.value ?: "",
+                    value = viewModel.username.value,
                     onValueChange = {
-                        viewModel?.email?.value = it
+                        viewModel.username.value = it
+                    },
+                    label = "Nombre de usuario",
+                    icon = Icons.Default.Person,
+                    contentDescription = "Introduce nombre de usuario",
+                    errorMsg = viewModel.usernameErrMsg.value,
+                    validateField = {
+                        viewModel.validateUsername()
+                    }
+                )
+                DefaultTextField(
+                    modifier = Modifier
+                        .padding(
+                            start = 20.dp,
+                            end = 20.dp
+                        ),
+                    value = viewModel.email.value,
+                    onValueChange = {
+                        viewModel.email.value = it
                     },
                     label = "Correo electrónico",
                     icon = Icons.Default.Email,
@@ -119,11 +149,10 @@ fun LoginContent(
                 DefaultTextField(
                     modifier = Modifier
                         .padding(
-                            top = 10.dp,
                             start = 20.dp,
-                            end = 30.dp
+                            end = 20.dp
                         ),
-                    value = viewModel.password.value ?: "",
+                    value = viewModel.password.value,
                     onValueChange = {
                         viewModel.password.value = it
                     },
@@ -136,6 +165,25 @@ fun LoginContent(
                         viewModel.validatePassword()
                     }
                 )
+                DefaultTextField(
+                    modifier = Modifier
+                        .padding(
+                            start = 20.dp,
+                            end = 20.dp
+                        ),
+                    value = viewModel.confirmPassword.value,
+                    onValueChange = {
+                        viewModel.confirmPassword.value = it
+                    },
+                    label = "Confirmar contraseña",
+                    icon = Icons.Outlined.Lock,
+                    hideText = true,
+                    contentDescription = "Confirmar contraseña",
+                    errorMsg = viewModel.confirmPasswordErrMsg.value,
+                    validateField = {
+                        viewModel.validateConfirmPassword()
+                    }
+                )
                 DefaultButton(
                     modifier = Modifier
                         .padding(
@@ -144,12 +192,11 @@ fun LoginContent(
                             end = 60.dp
                         )
                         .fillMaxWidth(),
-                    text = "Iniciar sesión",
+                    text = "Crear cuenta",
                     onClick = {},
-                    enabled = viewModel.isEnabledLoginButton
+                    enabled = viewModel.isEnabledSignupButton
                 )
             }
         }
     }
 }
-

@@ -64,7 +64,7 @@ fun GamingAppTheme(
         SideEffect {
             val window = (view.context as Activity).window
             WindowCompat.setDecorFitsSystemWindows(window, true)
-            window.statusBarColor = colorScheme.secondary.toArgb()
+            window.statusBarColor = Red700.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme // negate darkTheme
         }
     }

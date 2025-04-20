@@ -1,6 +1,7 @@
 package dev.andrescoder.gamingapp.presentation.screens.login.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,9 +14,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import dev.andrescoder.gamingapp.presentation.navigation.AppScreen
 
 @Composable
-fun LoginBottomBar(){
+fun LoginBottomBar(navController: NavHostController?){
     Row(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -29,7 +32,13 @@ fun LoginBottomBar(){
             color = Color.Gray
         )
         Text(
-            modifier = Modifier.padding(start = 10.dp),
+            modifier = Modifier
+                .padding(start = 10.dp)
+                .clickable {
+                    navController?.navigate(
+                        route = AppScreen.Signup.route
+                    )
+                },
             text = "Regístrate",
             fontSize = 18.sp,
             color = Color.Red,
