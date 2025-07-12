@@ -29,20 +29,25 @@ fun DefaultButton(
     onClick: () -> Unit,
     color: Color = Red500,
     icon: ImageVector = Icons.AutoMirrored.Filled.ArrowForward,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    textColor: Color = Color.White
 ) {
     Column {
         Button(
             modifier = modifier,
-            onClick = { onClick() },
+            onClick = onClick,
             colors = ButtonDefaults.buttonColors(
-                containerColor = color
+                containerColor = color,
+                contentColor = textColor, // <-- Esto aplica a Text y Icon
+                disabledContainerColor = color.copy(alpha = 0.3f),
+                disabledContentColor = textColor.copy(alpha = 0.3f)
             ),
             enabled = enabled
         ) {
             Icon(
                 imageVector = icon,
-                contentDescription = "Pulsar para acceder"
+                contentDescription = "Pulsar para acceder",
+                // tint no necesario si contentColor está definido
             )
             Spacer(modifier = Modifier.width(10.dp))
             Text(
@@ -50,6 +55,7 @@ fun DefaultButton(
                 fontSize = 22.sp
             )
         }
+
         Text(
             modifier = Modifier.padding(top = 5.dp),
             text = errorMsg,

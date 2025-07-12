@@ -133,6 +133,7 @@ fun LoginContent(
                         .padding(top = 20.dp, start = 60.dp, end = 60.dp)
                         .fillMaxWidth(),
                     text = "Iniciar sesión",
+
                     onClick = {
                         coroutineScope.launch {
                             viewModel.login()
