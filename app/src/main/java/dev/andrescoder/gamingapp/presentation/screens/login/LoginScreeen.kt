@@ -12,14 +12,14 @@ import dev.andrescoder.gamingapp.presentation.screens.login.components.LoginCont
 @Composable
 fun LoginScreen(
     paddingValues: PaddingValues? = null,
-    navController: NavHostController? = null
+    navController: NavHostController? = null,
 ) {
     Scaffold(
         modifier = Modifier
             .padding(paddingValues = paddingValues ?: PaddingValues()),
         topBar = {},
         content = {
-            LoginContent(it)
+            LoginContent(navController, it)
         },
         bottomBar = {
             LoginBottomBar(navController)

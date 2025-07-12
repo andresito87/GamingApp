@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="dev.andrescoder.gamingapp" />
+                  <option name="mobileSdkAppId" value="1:1047148489066:android:a66be04a654c5a072b1d13" />
+                  <option name="projectId" value="gaming-app-38197" />
+                  <option name="projectNumber" value="1047148489066" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
