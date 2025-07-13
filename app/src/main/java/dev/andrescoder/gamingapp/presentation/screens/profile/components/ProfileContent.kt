@@ -40,7 +40,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileContent(
-    navHostController: NavHostController,
+    navController: NavHostController,
+    modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = hiltViewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -80,14 +81,14 @@ fun ProfileContent(
         }
         Spacer(modifier = Modifier.height(55.dp))
         Text(
-            text = "Nombre del usuario",
+            text = viewModel.userData.username,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             fontStyle = FontStyle.Italic,
             color = Color.White
         )
         Text(
-            text = "Email del usuario",
+            text = viewModel.userData.email,
             fontSize = 15.sp,
             fontStyle = FontStyle.Italic,
             color = Color.White
@@ -110,7 +111,7 @@ fun ProfileContent(
             onClick = {
                 coroutineScope.launch {
                     viewModel.logout()
-                    navHostController.navigate(route = AppScreen.Login.route) {
+                    navController.navigate(route = AppScreen.Login.route) {
                         popUpTo(AppScreen.Profile.route) { inclusive = true }
                     }
                 }

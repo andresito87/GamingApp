@@ -107,25 +107,25 @@ fun LoginContent(
                 DefaultTextField(
                     modifier = Modifier
                         .padding(top = 25.dp, start = 20.dp, end = 30.dp),
-                    value = viewModel.email.value,
-                    onValueChange = { viewModel.email.value = it },
+                    value = viewModel.email,
+                    onValueChange = { viewModel.email = it },
                     label = "Correo electrónico",
                     icon = Icons.Default.Email,
                     keyboardType = KeyboardType.Email,
                     contentDescription = "Introduce email",
-                    errorMsg = viewModel.emailErrMsg.value,
+                    errorMsg = viewModel.emailErrMsg,
                     validateField = { viewModel.validateEmail() }
                 )
                 DefaultTextField(
                     modifier = Modifier
                         .padding(top = 10.dp, start = 20.dp, end = 30.dp),
-                    value = viewModel.password.value,
-                    onValueChange = { viewModel.password.value = it },
+                    value = viewModel.password,
+                    onValueChange = { viewModel.password = it },
                     label = "Contraseña",
                     icon = Icons.Default.Lock,
                     hideText = true,
                     contentDescription = "Introduce contraseña",
-                    errorMsg = viewModel.passwordErrMsg.value,
+                    errorMsg = viewModel.passwordErrMsg,
                     validateField = { viewModel.validatePassword() }
                 )
                 DefaultButton(
@@ -144,7 +144,7 @@ fun LoginContent(
             }
         }
 
-        // 🌀 Animación de carga sobre toda la UI
+        // Loading animation when login
         if (loginFlow.value is Response.Loading) {
             Box(
                 modifier = Modifier

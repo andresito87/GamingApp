@@ -2,7 +2,9 @@ package dev.andrescoder.gamingapp.presentation.screens.login
 
 import android.util.Patterns
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
@@ -19,13 +21,13 @@ class LoginViewModel @Inject constructor(
     private val authUseCases: AuthUseCases
 ) : ViewModel() {
 
-    var email: MutableState<String> = mutableStateOf("")
-    var isEmailValid: MutableState<Boolean> = mutableStateOf(false)
-    var emailErrMsg: MutableState<String> = mutableStateOf("")
+    var email:String by mutableStateOf("")
+    var isEmailValid: Boolean by mutableStateOf(false)
+    var emailErrMsg: String by mutableStateOf("")
 
-    var password: MutableState<String> = mutableStateOf("")
-    var isPasswordValid: MutableState<Boolean> = mutableStateOf(false)
-    var passwordErrMsg: MutableState<String> = mutableStateOf("")
+    var password: String by mutableStateOf("")
+    var isPasswordValid: Boolean by mutableStateOf(false)
+    var passwordErrMsg: String by mutableStateOf("")
 
     var isEnabledLoginButton = false;
 
@@ -43,33 +45,33 @@ class LoginViewModel @Inject constructor(
     // launch allows to use coroutines
     fun login() = viewModelScope.launch {
         _loginFlow.value= Response.Loading
-        val result = authUseCases.login(email.value, password.value)
+        val result = authUseCases.login(email, password)
         _loginFlow.value=result
     }
 
     fun enableLoginButton() {
-        isEnabledLoginButton = isEmailValid.value && isPasswordValid.value
+        isEnabledLoginButton = isEmailValid && isPasswordValid
     }
 
     fun validateEmail() {
-        if (Patterns.EMAIL_ADDRESS.matcher(email.value).matches()) {
-            isEmailValid.value = true
-            emailErrMsg.value = ""
+        if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            isEmailValid = true
+            emailErrMsg = ""
         } else {
-            isEmailValid.value = false
-            emailErrMsg.value = "El email no es válido"
+            isEmailValid = false
+            emailErrMsg = "El email no es válido"
         }
 
         enableLoginButton()
     }
 
     fun validatePassword() {
-        if (password.value.length >= 6) {
-            isPasswordValid.value = true
-            passwordErrMsg.value = ""
+        if (password.length >= 6) {
+            isPasswordValid = true
+            passwordErrMsg = ""
         } else {
-            isPasswordValid.value = false
-            passwordErrMsg.value = "Al menos 6 caracteres"
+            isPasswordValid = false
+            passwordErrMsg = "Al menos 6 caracteres"
         }
 
         enableLoginButton()

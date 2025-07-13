@@ -143,7 +143,7 @@ fun SignupContent(
             }
         }
 
-        // Loading overlay dentro del mismo Box raíz
+        // Loading overlay for signup
         if (signupFlow.value is Response.Loading) {
             Box(
                 modifier = Modifier
@@ -160,7 +160,8 @@ fun SignupContent(
         when (it) {
             is Response.Success -> {
                 LaunchedEffect(Unit) {
-                    navController?.popBackStack(AppScreen.Login.route, true)
+                    viewModel.createUser()
+                    navController?.popBackStack(AppScreen.Login.route, true) // Clear the back stack
                     navController?.navigate(AppScreen.Profile.route)
                 }
             }
