@@ -52,7 +52,6 @@ fun LoginContent(
     val loginFlow = viewModel.loginFlow.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
-    val state = viewModel.state
 
     Box(
         modifier = Modifier
@@ -108,25 +107,25 @@ fun LoginContent(
                 DefaultTextField(
                     modifier = Modifier
                         .padding(top = 25.dp, start = 20.dp, end = 30.dp),
-                    value = state.email,
-                    onValueChange = { viewModel.onEmailInput(it) },
+                    value = viewModel.email.value,
+                    onValueChange = { viewModel.email.value = it },
                     label = "Correo electrónico",
                     icon = Icons.Default.Email,
                     keyboardType = KeyboardType.Email,
                     contentDescription = "Introduce email",
-                    errorMsg = viewModel.emailErrMsg,
+                    errorMsg = viewModel.emailErrMsg.value,
                     validateField = { viewModel.validateEmail() }
                 )
                 DefaultTextField(
                     modifier = Modifier
                         .padding(top = 10.dp, start = 20.dp, end = 30.dp),
-                    value = state.password,
-                    onValueChange = { viewModel.onPasswordInput(it) },
+                    value = viewModel.password.value,
+                    onValueChange = { viewModel.password.value = it },
                     label = "Contraseña",
                     icon = Icons.Default.Lock,
                     hideText = true,
                     contentDescription = "Introduce contraseña",
-                    errorMsg = viewModel.passwordErrMsg,
+                    errorMsg = viewModel.passwordErrMsg.value,
                     validateField = { viewModel.validatePassword() }
                 )
                 DefaultButton(
@@ -145,7 +144,7 @@ fun LoginContent(
             }
         }
 
-        // Loading animation when login
+        // 🌀 Animación de carga sobre toda la UI
         if (loginFlow.value is Response.Loading) {
             Box(
                 modifier = Modifier
