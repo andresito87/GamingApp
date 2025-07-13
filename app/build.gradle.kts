@@ -53,12 +53,18 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    // Navigation compose
     implementation("androidx.navigation:navigation-compose:2.8.9")
 
+    // Dagger Hilt
     implementation("com.google.dagger:hilt-android:2.51.1")
-    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
-    implementation(libs.firebase.auth)
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.16.0"))
+    implementation("com.google.firebase:firebase-firestore")
+    implementation(libs.firebase.auth)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

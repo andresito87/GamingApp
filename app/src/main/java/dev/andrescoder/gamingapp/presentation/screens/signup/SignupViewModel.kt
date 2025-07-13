@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.andrescoder.gamingapp.domain.model.Response
 import dev.andrescoder.gamingapp.domain.model.User
 import dev.andrescoder.gamingapp.domain.use_cases.auth.AuthUseCases
+import dev.andrescoder.gamingapp.domain.use_cases.users.UsersUseCases
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -18,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignupViewModel @Inject constructor(
     private val authUseCases: AuthUseCases,
+    private val usersUseCase: UsersUseCases,
 ) : ViewModel() {
     var username: MutableState<String> = mutableStateOf("")
     var isValidUsername: MutableState<Boolean> = mutableStateOf(false)
@@ -40,23 +42,28 @@ class SignupViewModel @Inject constructor(
     private val _signupFlow = MutableStateFlow<Response<FirebaseUser>?>(null)
     val signupFlow: StateFlow<Response<FirebaseUser>?> = _signupFlow
 
+    var user = User()
+
     fun onSignup() {
-        val user = User(
-            email = email.value,
-            password = password.value
-        )
+        user.username = username.value
+        user.email = email.value
+        user.password = password.value
         signup(user)
     }
 
     fun signup(user1: User) = viewModelScope.launch {
         println("Signup intentado con email=${email.value}, password=${password.value}")
 
-        val user = User(email=email.value, password = password.value)
+        val user = User(email = email.value, password = password.value)
         _signupFlow.value = Response.Loading
         val result = authUseCases.signup(user)
         _signupFlow.value = result
     }
 
+    fun createUser() = viewModelScope.launch {
+        user.id = authUseCases.getCurrentUser()!!.uid
+        usersUseCase.create(user)
+    }
 
     fun enableSignupButton() {
         isEnabledSignupButton = isValidUsername.value

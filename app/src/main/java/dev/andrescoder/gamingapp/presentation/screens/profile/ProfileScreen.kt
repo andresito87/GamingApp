@@ -1,6 +1,8 @@
 package dev.andrescoder.gamingapp.presentation.screens.profile
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -22,9 +24,10 @@ fun ProfileScreen(
     Scaffold(
         topBar = {},
         bottomBar = {}
-    ) { paddingValues ->
-        Box(modifier = Modifier.padding(paddingValues)) {
-            ProfileContent(navController)
-        }
+    ) { paddingValuesIgnored ->
+        ProfileContent(
+            navController = navController,
+            modifier = Modifier.padding(paddingValuesIgnored) // 👈 solo para silenciar el warning
+        )
     }
 }
