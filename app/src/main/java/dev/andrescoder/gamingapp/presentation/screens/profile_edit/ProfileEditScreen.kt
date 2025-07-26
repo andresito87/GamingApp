@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import dev.andrescoder.gamingapp.presentation.components.DefaultTopBar
 import dev.andrescoder.gamingapp.presentation.screens.profile_edit.components.ProfileEditContent
+import dev.andrescoder.gamingapp.presentation.screens.profile_edit.components.Update
 
 @Composable
 fun ProfileEditScreen(
@@ -28,4 +29,5 @@ fun ProfileEditScreen(
         },
         bottomBar = {}
     )
+    Update()
 }

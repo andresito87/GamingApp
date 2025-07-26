@@ -32,7 +32,6 @@ import androidx.navigation.NavHostController
 import dev.andrescoder.gamingapp.R
 import dev.andrescoder.gamingapp.presentation.components.DefaultButton
 import dev.andrescoder.gamingapp.presentation.components.DefaultTextField
-import dev.andrescoder.gamingapp.presentation.navigation.AppScreen
 import dev.andrescoder.gamingapp.presentation.screens.profile_edit.ProfileEditViewModel
 import dev.andrescoder.gamingapp.presentation.ui.theme.Darkgray500
 import dev.andrescoder.gamingapp.presentation.ui.theme.Red500
@@ -111,7 +110,7 @@ fun ProfileEditContent(
                         .padding(top = 20.dp, start = 50.dp, end = 50.dp)
                         .fillMaxWidth(),
                     text = "Actualizar",
-                    onClick = {  },
+                    onClick = { viewModel.onUpdate() },
                 )
             }
         }

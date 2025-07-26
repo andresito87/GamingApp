@@ -21,6 +21,7 @@ import dev.andrescoder.gamingapp.domain.use_cases.auth.Logout
 import dev.andrescoder.gamingapp.domain.use_cases.auth.Signup
 import dev.andrescoder.gamingapp.domain.use_cases.users.Create
 import dev.andrescoder.gamingapp.domain.use_cases.users.GetUserById
+import dev.andrescoder.gamingapp.domain.use_cases.users.Update
 import dev.andrescoder.gamingapp.domain.use_cases.users.UsersUseCases
 
 @InstallIn(SingletonComponent::class)
@@ -54,6 +55,7 @@ object AppModule {
     @Provides
     fun provideUsersUseCases(repository: UsersRepository) = UsersUseCases(
         create = Create(repository),
-        getUserById = GetUserById(repository)
+        getUserById = GetUserById(repository),
+        update = Update(repository)
     )
 }
