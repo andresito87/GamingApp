@@ -66,6 +66,9 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation(libs.firebase.auth)
 
+    // Gson
+    implementation("com.google.code.gson:gson:2.13.1")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

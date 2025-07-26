@@ -1,4 +1,4 @@
-package dev.andrescoder.gamingapp.presentation.screens.signup.components
+package dev.andrescoder.gamingapp.presentation.screens.profile_edit.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,10 +14,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -28,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -36,15 +32,16 @@ import androidx.navigation.NavHostController
 import dev.andrescoder.gamingapp.R
 import dev.andrescoder.gamingapp.presentation.components.DefaultButton
 import dev.andrescoder.gamingapp.presentation.components.DefaultTextField
-import dev.andrescoder.gamingapp.presentation.screens.signup.SignupViewModel
+import dev.andrescoder.gamingapp.presentation.navigation.AppScreen
+import dev.andrescoder.gamingapp.presentation.screens.profile_edit.ProfileEditViewModel
 import dev.andrescoder.gamingapp.presentation.ui.theme.Darkgray500
 import dev.andrescoder.gamingapp.presentation.ui.theme.Red500
 
 @Composable
-fun SignupContent(
+fun ProfileEditContent(
     paddingValues: PaddingValues,
-    navController: NavHostController?,
-    viewModel: SignupViewModel = hiltViewModel(),
+    navController: NavHostController,
+    viewModel: ProfileEditViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state
 
@@ -86,15 +83,15 @@ fun SignupContent(
             ) {
                 Text(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
-                    text = "REGISTRO",
+                    text = "ACTUALIZACIÓN",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
-                        .padding(start = 20.dp, end = 20.dp),
-                    text = "Rellena la información para crear una cuenta",
+                        .padding(start = 20.dp, end = 20.dp, top = 10.dp),
+                    text = "Rellena la información a modificar",
                     fontSize = 18.sp,
                     color = Color.White
                 )
@@ -108,46 +105,13 @@ fun SignupContent(
                     errorMsg = viewModel.usernameErrMsg,
                     validateField = { viewModel.validateUsername() }
                 )
-                DefaultTextField(
-                    modifier = Modifier.padding(start = 20.dp, end = 20.dp),
-                    value = state.email,
-                    onValueChange = { viewModel.onEmailInput(it) },
-                    label = "Correo electrónico",
-                    icon = Icons.Default.Email,
-                    keyboardType = KeyboardType.Email,
-                    contentDescription = "Introduce email",
-                    errorMsg = viewModel.emailErrMsg,
-                    validateField = { viewModel.validateEmail() }
-                )
-                DefaultTextField(
-                    modifier = Modifier.padding(start = 20.dp, end = 20.dp),
-                    value = state.password,
-                    onValueChange = { viewModel.onPasswordInput(it) },
-                    label = "Contraseña",
-                    icon = Icons.Default.Lock,
-                    hideText = true,
-                    contentDescription = "Introduce contraseña",
-                    errorMsg = viewModel.passwordErrMsg,
-                    validateField = { viewModel.validatePassword() }
-                )
-                DefaultTextField(
-                    modifier = Modifier.padding(start = 20.dp, end = 20.dp),
-                    value = state.confirmPassword,
-                    onValueChange = { viewModel.onConfirmPasswordInput(it) },
-                    label = "Confirmar contraseña",
-                    icon = Icons.Outlined.Lock,
-                    hideText = true,
-                    contentDescription = "Confirmar contraseña",
-                    errorMsg = viewModel.confirmPasswordErrMsg,
-                    validateField = { viewModel.validateConfirmPassword() }
-                )
+
                 DefaultButton(
                     modifier = Modifier
-                        .padding(top = 20.dp, start = 60.dp, end = 60.dp)
+                        .padding(top = 20.dp, start = 50.dp, end = 50.dp)
                         .fillMaxWidth(),
-                    text = "Crear cuenta",
-                    onClick = { viewModel.onSignup() },
-                    enabled = viewModel.isEnabledSignupButton
+                    text = "Actualizar",
+                    onClick = {  },
                 )
             }
         }

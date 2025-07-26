@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import dev.andrescoder.gamingapp.presentation.screens.login.components.Login
 import dev.andrescoder.gamingapp.presentation.screens.login.components.LoginBottomBar
 import dev.andrescoder.gamingapp.presentation.screens.login.components.LoginContent
 import dev.andrescoder.gamingapp.presentation.ui.theme.GamingAppTheme
@@ -31,14 +32,16 @@ fun LoginScreen(
             LoginBottomBar(navController)
         }
     )
+    // Manage request login state
+    Login(navController = navController)
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun DefaultPreview() {
-    GamingAppTheme (
+    GamingAppTheme(
         darkTheme = true
-    ){
+    ) {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background

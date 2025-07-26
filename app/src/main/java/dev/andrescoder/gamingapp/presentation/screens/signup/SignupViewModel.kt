@@ -1,8 +1,9 @@
 package dev.andrescoder.gamingapp.presentation.screens.signup
 
 import android.util.Patterns
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
@@ -11,8 +12,6 @@ import dev.andrescoder.gamingapp.domain.model.Response
 import dev.andrescoder.gamingapp.domain.model.User
 import dev.andrescoder.gamingapp.domain.use_cases.auth.AuthUseCases
 import dev.andrescoder.gamingapp.domain.use_cases.users.UsersUseCases
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,43 +20,67 @@ class SignupViewModel @Inject constructor(
     private val authUseCases: AuthUseCases,
     private val usersUseCase: UsersUseCases,
 ) : ViewModel() {
-    var username: MutableState<String> = mutableStateOf("")
-    var isValidUsername: MutableState<Boolean> = mutableStateOf(false)
-    var usernameErrMsg: MutableState<String> = mutableStateOf("")
 
-    var email: MutableState<String> = mutableStateOf("")
-    var isEmailValid: MutableState<Boolean> = mutableStateOf(false)
-    var emailErrMsg: MutableState<String> = mutableStateOf("")
+    var state by mutableStateOf(SignupState())
+        private set
 
-    var password: MutableState<String> = mutableStateOf("")
-    var isPasswordValid: MutableState<Boolean> = mutableStateOf(false)
-    var passwordErrMsg: MutableState<String> = mutableStateOf("")
+    var isValidUsername by mutableStateOf(false)
+        private set
+    var usernameErrMsg by mutableStateOf("")
+        private set
 
-    var confirmPassword: MutableState<String> = mutableStateOf("")
-    var isValidConfirmPassword: MutableState<Boolean> = mutableStateOf(false)
-    var confirmPasswordErrMsg: MutableState<String> = mutableStateOf("")
+    var isEmailValid by mutableStateOf(false)
+        private set
+    var emailErrMsg by mutableStateOf("")
+        private set
+
+    var isPasswordValid by mutableStateOf(false)
+        private set
+    var passwordErrMsg by mutableStateOf("")
+        private set
+
+    var isValidConfirmPassword by mutableStateOf(false)
+        private set
+    var confirmPasswordErrMsg by mutableStateOf("")
+        private set
 
     var isEnabledSignupButton = false;
 
-    private val _signupFlow = MutableStateFlow<Response<FirebaseUser>?>(null)
-    val signupFlow: StateFlow<Response<FirebaseUser>?> = _signupFlow
+    var signupResponse by mutableStateOf<Response<FirebaseUser>?>(null)
+        private set
 
     var user = User()
 
+    fun onUsernameInput(username: String) {
+        state = state.copy(username = username)
+    }
+
+    fun onEmailInput(email: String) {
+        state = state.copy(email = email)
+    }
+
+    fun onPasswordInput(password: String) {
+        state = state.copy(password = password)
+    }
+
+    fun onConfirmPasswordInput(confirmPassword: String) {
+        state = state.copy(confirmPassword = confirmPassword)
+    }
+
     fun onSignup() {
-        user.username = username.value
-        user.email = email.value
-        user.password = password.value
+        user.username = state.username
+        user.email = state.email
+        user.password = state.password
         signup(user)
     }
 
     fun signup(user1: User) = viewModelScope.launch {
-        println("Signup intentado con email=${email.value}, password=${password.value}")
+        println("Signup intentado con email=${state.email}, password=${state.password}")
 
-        val user = User(email = email.value, password = password.value)
-        _signupFlow.value = Response.Loading
+        val user = User(email = state.email, password = state.password)
+        signupResponse = Response.Loading
         val result = authUseCases.signup(user)
-        _signupFlow.value = result
+        signupResponse = result
     }
 
     fun createUser() = viewModelScope.launch {
@@ -66,55 +89,55 @@ class SignupViewModel @Inject constructor(
     }
 
     fun enableSignupButton() {
-        isEnabledSignupButton = isValidUsername.value
-                && isEmailValid.value
-                && isPasswordValid.value
-                && isValidConfirmPassword.value
+        isEnabledSignupButton = isValidUsername
+                && isEmailValid
+                && isPasswordValid
+                && isValidConfirmPassword
     }
 
     fun validateUsername() {
-        if (username.value.length > 4) {
-            isValidUsername.value = true
-            usernameErrMsg.value = ""
+        if (state.username.length > 4) {
+            isValidUsername = true
+            usernameErrMsg = ""
         } else {
-            isValidUsername.value = false
-            usernameErrMsg.value = "El nombre de usuario no es válido"
+            isValidUsername = false
+            usernameErrMsg = "El nombre de usuario no es válido"
         }
 
         enableSignupButton()
     }
 
     fun validateEmail() {
-        if (Patterns.EMAIL_ADDRESS.matcher(email.value).matches()) {
-            isEmailValid.value = true
-            emailErrMsg.value = ""
+        if (Patterns.EMAIL_ADDRESS.matcher(state.email).matches()) {
+            isEmailValid = true
+            emailErrMsg = ""
         } else {
-            isEmailValid.value = false
-            emailErrMsg.value = "El email no es válido"
+            isEmailValid = false
+            emailErrMsg = "El email no es válido"
         }
 
         enableSignupButton()
     }
 
     fun validatePassword() {
-        if (password.value.length >= 6) {
-            isPasswordValid.value = true
-            confirmPasswordErrMsg.value = ""
+        if (state.password.length >= 6) {
+            isPasswordValid = true
+            confirmPasswordErrMsg = ""
         } else {
-            isPasswordValid.value = false
-            confirmPasswordErrMsg.value = "La contraseña y su confirmación no coinciden"
+            isPasswordValid = false
+            confirmPasswordErrMsg = "La contraseña y su confirmación no coinciden"
         }
 
         enableSignupButton()
     }
 
     fun validateConfirmPassword() {
-        if (password.value == confirmPassword.value) {
-            isValidConfirmPassword.value = true
-            passwordErrMsg.value = ""
+        if (state.password == state.confirmPassword) {
+            isValidConfirmPassword = true
+            passwordErrMsg = ""
         } else {
-            isPasswordValid.value = false
-            passwordErrMsg.value = "Al menos 6 caracteres"
+            isPasswordValid = false
+            passwordErrMsg = "Al menos 6 caracteres"
         }
 
         enableSignupButton()

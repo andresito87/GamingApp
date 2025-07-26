@@ -2,7 +2,9 @@ package dev.andrescoder.gamingapp.presentation.screens.login
 
 import android.util.Patterns
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
@@ -16,18 +18,31 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val authUseCases: AuthUseCases
+    private val authUseCases: AuthUseCases,
 ) : ViewModel() {
 
-    var email: MutableState<String> = mutableStateOf("")
-    var isEmailValid: MutableState<Boolean> = mutableStateOf(false)
-    var emailErrMsg: MutableState<String> = mutableStateOf("")
+    // State form
+    var state by mutableStateOf(LoginState())
+        private set
 
-    var password: MutableState<String> = mutableStateOf("")
-    var isPasswordValid: MutableState<Boolean> = mutableStateOf(false)
-    var passwordErrMsg: MutableState<String> = mutableStateOf("")
+    // Email
+    var isEmailValid: Boolean by mutableStateOf(false)
+        private set
+    var emailErrMsg: String by mutableStateOf("")
+        private set
 
+    // Password
+    var isPasswordValid: Boolean by mutableStateOf(false)
+        private set
+    var passwordErrMsg: String by mutableStateOf("")
+        private set
+
+    // Enable Button
     var isEnabledLoginButton = false;
+
+    // Login response
+    var loginResponse by mutableStateOf<Response<FirebaseUser>?>(null)
+        private set
 
     private val _loginFlow = MutableStateFlow<Response<FirebaseUser>?>(null)
     val loginFlow: StateFlow<Response<FirebaseUser>?> = _loginFlow
@@ -36,40 +51,48 @@ class LoginViewModel @Inject constructor(
 
     init {
         if (currentUser != null) { // already logged in
-            _loginFlow.value = Response.Success(currentUser)
+            loginResponse = Response.Success(currentUser)
         }
+    }
+
+    fun onEmailChanged(value: String) {
+        state = state.copy(email = value)
+    }
+
+    fun onPasswordChanged(value: String) {
+        state = state.copy(password = value)
     }
 
     // launch allows to use coroutines
     fun login() = viewModelScope.launch {
-        _loginFlow.value= Response.Loading
-        val result = authUseCases.login(email.value, password.value)
-        _loginFlow.value=result
+        loginResponse = Response.Loading
+        val result = authUseCases.login(state.email, state.password)
+        loginResponse = result
     }
 
     fun enableLoginButton() {
-        isEnabledLoginButton = isEmailValid.value && isPasswordValid.value
+        isEnabledLoginButton = isEmailValid && isPasswordValid
     }
 
     fun validateEmail() {
-        if (Patterns.EMAIL_ADDRESS.matcher(email.value).matches()) {
-            isEmailValid.value = true
-            emailErrMsg.value = ""
+        if (Patterns.EMAIL_ADDRESS.matcher(state.email).matches()) {
+            isEmailValid = true
+            emailErrMsg = ""
         } else {
-            isEmailValid.value = false
-            emailErrMsg.value = "El email no es válido"
+            isEmailValid = false
+            emailErrMsg = "El email no es válido"
         }
 
         enableLoginButton()
     }
 
     fun validatePassword() {
-        if (password.value.length >= 6) {
-            isPasswordValid.value = true
-            passwordErrMsg.value = ""
+        if (state.password.length >= 6) {
+            isPasswordValid = true
+            passwordErrMsg = ""
         } else {
-            isPasswordValid.value = false
-            passwordErrMsg.value = "Al menos 6 caracteres"
+            isPasswordValid = false
+            passwordErrMsg = "Al menos 6 caracteres"
         }
 
         enableLoginButton()

@@ -100,7 +100,11 @@ fun ProfileContent(
             textColor = Color.Black,
             color = Color.White,
             icon = Icons.Default.Edit,
-            onClick = {}
+            onClick = {
+                navController.navigate(
+                    AppScreen.ProfileEdit.passUser(viewModel.userData.toJson())
+                )
+            }
         )
         Spacer(modifier = Modifier.height(10.dp))
         DefaultButton(
