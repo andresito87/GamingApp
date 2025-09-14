@@ -8,7 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import dev.andrescoder.gamingapp.presentation.screens.login.LoginScreen
 import dev.andrescoder.gamingapp.presentation.screens.profile.ProfileScreen
-import dev.andrescoder.gamingapp.presentation.screens.profile_edit.ProfileEditScreen
+import dev.andrescoder.gamingapp.presentation.screens.profile_update.ProfileEditScreen
 import dev.andrescoder.gamingapp.presentation.screens.signup.SignupScreen
 
 @Composable

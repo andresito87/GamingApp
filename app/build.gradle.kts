@@ -62,12 +62,18 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.16.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
     implementation("com.google.firebase:firebase-firestore")
     implementation(libs.firebase.auth)
+    implementation("com.google.firebase:firebase-storage")
 
     // Gson
     implementation("com.google.code.gson:gson:2.13.1")
+
+    // Async image
+    implementation("io.coil-kt:coil-compose:2.6.0")
+
+    implementation(libs.commons.io)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

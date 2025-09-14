@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,6 +22,7 @@ import dev.andrescoder.gamingapp.domain.use_cases.auth.Logout
 import dev.andrescoder.gamingapp.domain.use_cases.auth.Signup
 import dev.andrescoder.gamingapp.domain.use_cases.users.Create
 import dev.andrescoder.gamingapp.domain.use_cases.users.GetUserById
+import dev.andrescoder.gamingapp.domain.use_cases.users.SaveImage
 import dev.andrescoder.gamingapp.domain.use_cases.users.Update
 import dev.andrescoder.gamingapp.domain.use_cases.users.UsersUseCases
 
@@ -32,11 +34,18 @@ object AppModule {
     fun provideFirebaseFirestore(): FirebaseFirestore = Firebase.firestore // connect to firestore
 
     @Provides
+    fun provideFirebaseStorage(): FirebaseStorage = FirebaseStorage.getInstance()
+
+    @Provides
+    fun provideStorageUsersRef(storage: FirebaseStorage) =
+        storage.reference.child(USERS) // create a folder of users in storage
+
+    @Provides
     fun provideUsersRef(db: FirebaseFirestore): CollectionReference =
         db.collection(USERS) // create a collection of users in firestore
 
     @Provides
-    fun providerFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
     @Provides
     fun provideAuthRepository(impl: AuthRepositoryImpl): AuthRepository = impl
@@ -56,6 +65,7 @@ object AppModule {
     fun provideUsersUseCases(repository: UsersRepository) = UsersUseCases(
         create = Create(repository),
         getUserById = GetUserById(repository),
-        update = Update(repository)
+        update = Update(repository),
+        saveImage = SaveImage(repository)
     )
 }

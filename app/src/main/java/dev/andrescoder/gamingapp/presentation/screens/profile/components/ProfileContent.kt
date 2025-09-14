@@ -1,6 +1,7 @@
 package dev.andrescoder.gamingapp.presentation.screens.profile.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -29,6 +32,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import dev.andrescoder.gamingapp.R
 import dev.andrescoder.gamingapp.presentation.components.DefaultButton
 import dev.andrescoder.gamingapp.presentation.navigation.AppScreen
@@ -37,6 +42,8 @@ import dev.andrescoder.gamingapp.presentation.ui.theme.GamingAppTheme
 import dev.andrescoder.gamingapp.presentation.ui.theme.Red500
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @Composable
 fun ProfileContent(
@@ -72,11 +79,28 @@ fun ProfileContent(
                     color = Color.White
                 )
                 Spacer(modifier = Modifier.height(55.dp))
-                Image(
-                    modifier = Modifier.size(115.dp),
-                    painter = painterResource(id = R.drawable.user),
-                    contentDescription = ""
-                )
+                if (viewModel.userData.image != "") {
+                    Box(
+                        modifier = Modifier
+                            .size(150.dp)
+                            .clip(CircleShape)
+                            .background(Color(0x1FFFFFFF))
+                    ) {
+                        AsyncImage(
+                            model = viewModel.userData.image,
+                            contentDescription = "Imagen del usuario",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .fillMaxSize()
+                        )
+                    }
+                } else {
+                    Image(
+                        modifier = Modifier.size(115.dp),
+                        painter = painterResource(id = R.drawable.user),
+                        contentDescription = ""
+                    )
+                }
             }
         }
         Spacer(modifier = Modifier.height(55.dp))

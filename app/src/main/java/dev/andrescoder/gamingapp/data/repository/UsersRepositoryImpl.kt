@@ -1,6 +1,8 @@
 package dev.andrescoder.gamingapp.data.repository
 
+import android.net.Uri
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.storage.StorageReference
 import dev.andrescoder.gamingapp.domain.model.Response
 import dev.andrescoder.gamingapp.domain.model.User
 import dev.andrescoder.gamingapp.domain.repository.UsersRepository
@@ -8,9 +10,13 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import java.io.File
 import javax.inject.Inject
 
-class UsersRepositoryImpl @Inject constructor(val usersRef: CollectionReference) : UsersRepository {
+class UsersRepositoryImpl @Inject constructor(
+    private val usersRef: CollectionReference,
+    private val storageUsersRef: StorageReference,
+) : UsersRepository {
     override suspend fun create(user: User): Response<Boolean> {
         return try {
             user.password = "" // Clear password to not save it in the database
@@ -30,6 +36,19 @@ class UsersRepositoryImpl @Inject constructor(val usersRef: CollectionReference)
 
             usersRef.document(user.id).update(mapUserData).await()
             Response.Success(true)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Response.Failure(e)
+        }
+    }
+
+    override suspend fun saveImage(file: File): Response<String> {
+        return try {
+            val fromFile = Uri.fromFile(file)
+            val imageRef = storageUsersRef.child( file.name)
+            val uploadTask = imageRef.putFile(fromFile).await()
+            val url = imageRef.downloadUrl.await().toString()
+            return Response.Success(url)
         } catch (e: Exception) {
             e.printStackTrace()
             Response.Failure(e)
