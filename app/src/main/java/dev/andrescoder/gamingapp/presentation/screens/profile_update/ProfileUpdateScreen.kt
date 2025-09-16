@@ -15,8 +15,6 @@ fun ProfileEditScreen(
     user: String,
 ) {
 
-    Log.d("ProfileEditScreen", "User data: $user")
-
     Scaffold(
         topBar = {
             DefaultTopBar(
@@ -30,6 +28,8 @@ fun ProfileEditScreen(
         },
         bottomBar = {}
     )
+
     SaveImage()
     ProfileUpdate()
+
 }

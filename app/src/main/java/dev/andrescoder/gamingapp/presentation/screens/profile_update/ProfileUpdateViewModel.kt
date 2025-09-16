@@ -56,9 +56,16 @@ class ProfileUpdateViewModel @Inject constructor(
 
     fun saveImage() = viewModelScope.launch {
         if (file != null) {
+            // actualizar imagen y username
             saveImageResponse = Response.Loading
             val result = usersUseCases.saveImage(file!!)
             saveImageResponse = result
+            if (result is Response.Success) {
+                onUpdate(result.data)
+            }
+        } else {
+            // actualizar solo username
+            onUpdate(state.image)
         }
     }
 

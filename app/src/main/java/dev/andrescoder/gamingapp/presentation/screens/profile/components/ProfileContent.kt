@@ -1,5 +1,7 @@
 package dev.andrescoder.gamingapp.presentation.screens.profile.components
 
+import android.app.Activity
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -13,8 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -23,27 +23,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
 import dev.andrescoder.gamingapp.R
+import dev.andrescoder.gamingapp.presentation.MainActivity
 import dev.andrescoder.gamingapp.presentation.components.DefaultButton
-import dev.andrescoder.gamingapp.presentation.navigation.AppScreen
+import dev.andrescoder.gamingapp.presentation.navigation.AuthScreen
+import dev.andrescoder.gamingapp.presentation.navigation.DetailsScreen
+import dev.andrescoder.gamingapp.presentation.navigation.Graph
 import dev.andrescoder.gamingapp.presentation.screens.profile.ProfileViewModel
-import dev.andrescoder.gamingapp.presentation.ui.theme.GamingAppTheme
 import dev.andrescoder.gamingapp.presentation.ui.theme.Red500
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 
 @Composable
 fun ProfileContent(
@@ -52,6 +49,7 @@ fun ProfileContent(
     viewModel: ProfileViewModel = hiltViewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val activity = LocalContext.current as? Activity
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -126,7 +124,7 @@ fun ProfileContent(
             icon = Icons.Default.Edit,
             onClick = {
                 navController.navigate(
-                    AppScreen.ProfileEdit.passUser(viewModel.userData.toJson())
+                    DetailsScreen.ProfileUpdate.passUser(viewModel.userData.toJson())
                 )
             }
         )
@@ -139,9 +137,8 @@ fun ProfileContent(
             onClick = {
                 coroutineScope.launch {
                     viewModel.logout()
-                    navController.navigate(route = AppScreen.Login.route) {
-                        popUpTo(AppScreen.Profile.route) { inclusive = true }
-                    }
+                    activity?.finish()
+                    activity?.startActivity(Intent(activity, MainActivity::class.java))
                 }
             }
         )

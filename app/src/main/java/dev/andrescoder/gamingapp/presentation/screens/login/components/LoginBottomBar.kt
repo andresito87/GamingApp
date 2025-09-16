@@ -15,7 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import dev.andrescoder.gamingapp.presentation.navigation.AppScreen
+import dev.andrescoder.gamingapp.presentation.navigation.AuthScreen
 
 @Composable
 fun LoginBottomBar(navController: NavHostController?){
@@ -36,7 +36,7 @@ fun LoginBottomBar(navController: NavHostController?){
                 .padding(start = 10.dp)
                 .clickable {
                     navController?.navigate(
-                        route = AppScreen.Signup.route
+                        route = AuthScreen.Signup.route
                     )
                 },
             text = "Regístrate",
