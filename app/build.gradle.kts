@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "dev.andrescoder.gamingapp"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "dev.andrescoder.gamingapp"
