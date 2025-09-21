@@ -13,10 +13,9 @@ fun PostsScreen(
     navController: NavHostController,
     viewModel: PostsViewModel = hiltViewModel(),
 ) {
-
     Scaffold(
         content = {
-            GetPosts()
+            GetPosts(navController = navController)
         }
     )
 }

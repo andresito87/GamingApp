@@ -25,6 +25,7 @@ import dev.andrescoder.gamingapp.domain.use_cases.auth.Logout
 import dev.andrescoder.gamingapp.domain.use_cases.auth.Signup
 import dev.andrescoder.gamingapp.domain.use_cases.posts.CreatePost
 import dev.andrescoder.gamingapp.domain.use_cases.posts.GetPosts
+import dev.andrescoder.gamingapp.domain.use_cases.posts.GetPostsByIdUser
 import dev.andrescoder.gamingapp.domain.use_cases.posts.PostsUseCases
 import dev.andrescoder.gamingapp.domain.use_cases.users.Create
 import dev.andrescoder.gamingapp.domain.use_cases.users.GetUserById
@@ -94,6 +95,7 @@ object AppModule {
     @Provides
     fun providePostsUseCases(repository: PostsRepository) = PostsUseCases(
         create = CreatePost(repository),
-        getPosts = GetPosts(repository)
+        getPosts = GetPosts(repository),
+        getPostsByIdUser = GetPostsByIdUser(repository)
     )
 }

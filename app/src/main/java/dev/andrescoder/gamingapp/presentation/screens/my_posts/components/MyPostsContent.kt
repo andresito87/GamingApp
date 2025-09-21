@@ -1,4 +1,4 @@
-package dev.andrescoder.gamingapp.presentation.screens.posts.components
+package dev.andrescoder.gamingapp.presentation.screens.my_posts.components
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,12 +9,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import dev.andrescoder.gamingapp.domain.model.Post
 
 @Composable
-fun PostsContent(
+fun MyPostsContent(
     navController: NavHostController,
     posts: List<Post>,
     contentPadding: PaddingValues = PaddingValues(),
@@ -29,6 +28,6 @@ fun PostsContent(
             bottom = contentPadding.calculateBottomPadding() + 75.dp
         )
     ) {
-        items(posts) { post -> PostsCard(navController = navController, post = post) }
+        items(posts) { post -> MyPostsCard(navController = navController, post = post) }
     }
 }

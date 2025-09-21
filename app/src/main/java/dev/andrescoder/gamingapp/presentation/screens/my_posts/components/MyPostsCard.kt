@@ -1,4 +1,4 @@
-package dev.andrescoder.gamingapp.presentation.screens.posts.components
+package dev.andrescoder.gamingapp.presentation.screens.my_posts.components
 
 import android.util.Log
 import androidx.compose.foundation.clickable
@@ -24,14 +24,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import dev.andrescoder.gamingapp.domain.model.Post
-import dev.andrescoder.gamingapp.domain.use_cases.auth.AuthUseCases
 import dev.andrescoder.gamingapp.presentation.navigation.DetailsScreen
-import dev.andrescoder.gamingapp.presentation.screens.destails_post.DetailsPostScreen
 
 @Composable
-fun PostsCard(
-    navController: NavHostController,
-    post: Post) {
+fun MyPostsCard(navController: NavHostController, post: Post) {
 
     Card(
         modifier = Modifier
@@ -74,12 +70,6 @@ fun PostsCard(
                         includeFontPadding = false
                     )
                 )
-            )
-            Text(
-                modifier = Modifier
-                    .padding(horizontal = 15.dp),
-                text = post.user?.username ?: "Autor Desconocido",
-                fontSize = 12.sp
             )
             Text(
                 modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp),

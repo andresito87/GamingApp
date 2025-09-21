@@ -35,11 +35,25 @@ class PostsRepositoryImpl @Inject constructor(
             GlobalScope.launch(Dispatchers.IO) {
                 val postResponse = if (snapshot != null) {
                     val posts = snapshot.toObjects(Post::class.java)
-                    // Get user for each post asynchronously
-                    posts.map { post ->
+                    val idUserArray = ArrayList<String>()
+                    posts.forEach { post ->
+                        idUserArray.add(post.idUser)
+                    }
+
+                    // Id users list without repeated ids
+                    val idUserList = idUserArray.toSet().toList()
+
+                    // Get posts for each user asynchronously
+                    idUserList.map { id ->
                         async {
-                            post.user = usersRef.document(post.idUser).get().await()
+                            val user = usersRef.document(id).get().await()
                                 .toObject(User::class.java)!!
+
+                            posts.forEach { post ->
+                                if (post.idUser == id) {
+                                    post.user = user
+                                }
+                            }
                         }
                     }.forEach {
                         it.await()
@@ -52,6 +66,24 @@ class PostsRepositoryImpl @Inject constructor(
                 trySend(postResponse)
             }
         }
+        awaitClose {
+            snapshotListener.remove()
+        }
+    }
+
+    override fun getPostsByUserId(idUser: String): Flow<Response<List<Post>>> = callbackFlow {
+        val snapshotListener =
+            postsRef.whereEqualTo("idUser", idUser).addSnapshotListener { snapshot, e ->
+
+                val postResponse = if (snapshot != null) {
+                    val posts = snapshot.toObjects(Post::class.java)
+
+                    Response.Success(posts)
+                } else {
+                    Response.Failure(e)
+                }
+                trySend(postResponse)
+            }
         awaitClose {
             snapshotListener.remove()
         }
