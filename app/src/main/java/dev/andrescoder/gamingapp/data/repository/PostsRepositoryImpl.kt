@@ -77,6 +77,9 @@ class PostsRepositoryImpl @Inject constructor(
 
                 val postResponse = if (snapshot != null) {
                     val posts = snapshot.toObjects(Post::class.java)
+                    snapshot.documents.forEachIndexed { index, document ->
+                        posts[index].id = document.id
+                    }
 
                     Response.Success(posts)
                 } else {
@@ -106,6 +109,16 @@ class PostsRepositoryImpl @Inject constructor(
             Response.Failure(e)
         }
 
+    }
+
+    override suspend fun delete(idPost: String): Response<Boolean> {
+        return try {
+            postsRef.document(idPost).delete().await()
+            Response.Success(true)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Response.Failure(e)
+        }
     }
 
 }

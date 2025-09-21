@@ -6,9 +6,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,13 +26,19 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import dev.andrescoder.gamingapp.domain.model.Post
 import dev.andrescoder.gamingapp.presentation.navigation.DetailsScreen
+import dev.andrescoder.gamingapp.presentation.screens.my_posts.MyPostsViewModel
 
 @Composable
-fun MyPostsCard(navController: NavHostController, post: Post) {
+fun MyPostsCard(
+    navController: NavHostController,
+    post: Post,
+    viewModel: MyPostsViewModel = hiltViewModel(),
+) {
 
     Card(
         modifier = Modifier
@@ -89,6 +100,16 @@ fun MyPostsCard(navController: NavHostController, post: Post) {
                     )
                 )
             )
+            IconButton(onClick = {
+                viewModel.delete(post.id)
+            }) {
+                Icon(
+                    modifier = Modifier.size(30.dp),
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Borrar Post",
+                    tint = Color.White
+                )
+            }
         }
     }
 
