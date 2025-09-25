@@ -1,4 +1,4 @@
-package dev.andrescoder.gamingapp.presentation.screens.destails_post.components
+package dev.andrescoder.gamingapp.presentation.screens.details_post.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,7 +24,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -47,7 +46,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import dev.andrescoder.gamingapp.R
-import dev.andrescoder.gamingapp.presentation.screens.destails_post.DetailsPostViewModel
+import dev.andrescoder.gamingapp.presentation.screens.details_post.DetailsPostViewModel
 import dev.andrescoder.gamingapp.presentation.ui.theme.GamingAppTheme
 import dev.andrescoder.gamingapp.presentation.ui.theme.Red500
 

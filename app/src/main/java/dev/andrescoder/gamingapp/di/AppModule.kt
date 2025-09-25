@@ -28,6 +28,7 @@ import dev.andrescoder.gamingapp.domain.use_cases.posts.DeletePost
 import dev.andrescoder.gamingapp.domain.use_cases.posts.GetPosts
 import dev.andrescoder.gamingapp.domain.use_cases.posts.GetPostsByIdUser
 import dev.andrescoder.gamingapp.domain.use_cases.posts.PostsUseCases
+import dev.andrescoder.gamingapp.domain.use_cases.posts.UpdatePost
 import dev.andrescoder.gamingapp.domain.use_cases.users.Create
 import dev.andrescoder.gamingapp.domain.use_cases.users.GetUserById
 import dev.andrescoder.gamingapp.domain.use_cases.users.SaveImage
@@ -98,6 +99,7 @@ object AppModule {
         create = CreatePost(repository),
         getPosts = GetPosts(repository),
         getPostsByIdUser = GetPostsByIdUser(repository),
-        deletePost = DeletePost(repository)
+        deletePost = DeletePost(repository),
+        updatePost = UpdatePost(repository)
     )
 }

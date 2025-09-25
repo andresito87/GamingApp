@@ -35,7 +35,7 @@ fun DefaultTopBar(
         modifier = Modifier
             .fillMaxWidth()
             .background(Red500)
-            .height(50.dp)
+            .height(40.dp)
             .drawBehind {
                 val shadowHeight = 6.dp.toPx()
                 drawRect(

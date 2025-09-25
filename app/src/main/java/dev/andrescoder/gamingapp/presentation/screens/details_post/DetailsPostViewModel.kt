@@ -1,4 +1,4 @@
-package dev.andrescoder.gamingapp.presentation.screens.destails_post
+package dev.andrescoder.gamingapp.presentation.screens.details_post
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

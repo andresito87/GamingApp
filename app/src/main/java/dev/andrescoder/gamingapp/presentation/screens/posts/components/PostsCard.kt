@@ -1,6 +1,5 @@
 package dev.andrescoder.gamingapp.presentation.screens.posts.components
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,9 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import dev.andrescoder.gamingapp.domain.model.Post
-import dev.andrescoder.gamingapp.domain.use_cases.auth.AuthUseCases
 import dev.andrescoder.gamingapp.presentation.navigation.DetailsScreen
-import dev.andrescoder.gamingapp.presentation.screens.destails_post.DetailsPostScreen
 
 @Composable
 fun PostsCard(

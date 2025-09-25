@@ -108,7 +108,35 @@ class PostsRepositoryImpl @Inject constructor(
             e.printStackTrace()
             Response.Failure(e)
         }
+    }
 
+    override suspend fun update(
+        post: Post,
+        file: File?,
+    ): Response<Boolean> {
+        return try {
+            if (file != null) {
+                // Save image to Firestore
+                val fromFile = Uri.fromFile(file)
+                val imageRef = storagePostsRef.child(file.name)
+                val uploadTask = imageRef.putFile(fromFile).await()
+                val url = imageRef.downloadUrl.await()
+                post.image = url.toString()
+            }
+
+            val map: MutableMap<String, Any> = HashMap()
+            map["name"] = post.name
+            map["description"] = post.description
+            map["image"] = post.image
+            map["category"] = post.category
+
+            // Save data post to Firestore
+            postsRef.document(post.id).update(map).await()
+            Response.Success(true)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Response.Failure(e)
+        }
     }
 
     override suspend fun delete(idPost: String): Response<Boolean> {
