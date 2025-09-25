@@ -24,9 +24,11 @@ import dev.andrescoder.gamingapp.domain.use_cases.auth.Login
 import dev.andrescoder.gamingapp.domain.use_cases.auth.Logout
 import dev.andrescoder.gamingapp.domain.use_cases.auth.Signup
 import dev.andrescoder.gamingapp.domain.use_cases.posts.CreatePost
+import dev.andrescoder.gamingapp.domain.use_cases.posts.DeleteLikePost
 import dev.andrescoder.gamingapp.domain.use_cases.posts.DeletePost
 import dev.andrescoder.gamingapp.domain.use_cases.posts.GetPosts
 import dev.andrescoder.gamingapp.domain.use_cases.posts.GetPostsByIdUser
+import dev.andrescoder.gamingapp.domain.use_cases.posts.LikePost
 import dev.andrescoder.gamingapp.domain.use_cases.posts.PostsUseCases
 import dev.andrescoder.gamingapp.domain.use_cases.posts.UpdatePost
 import dev.andrescoder.gamingapp.domain.use_cases.users.Create
@@ -100,6 +102,8 @@ object AppModule {
         getPosts = GetPosts(repository),
         getPostsByIdUser = GetPostsByIdUser(repository),
         deletePost = DeletePost(repository),
-        updatePost = UpdatePost(repository)
+        updatePost = UpdatePost(repository),
+        likePost = LikePost(repository),
+        deleteLikePost = DeleteLikePost(repository)
     )
 }

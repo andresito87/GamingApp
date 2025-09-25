@@ -5,7 +5,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import dev.andrescoder.gamingapp.presentation.screens.posts.components.DeleteLikePosts
 import dev.andrescoder.gamingapp.presentation.screens.posts.components.GetPosts
+import dev.andrescoder.gamingapp.presentation.screens.posts.components.LikePosts
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -18,4 +20,6 @@ fun PostsScreen(
             GetPosts(navController = navController)
         }
     )
+    LikePosts()
+    DeleteLikePosts()
 }

@@ -2,6 +2,7 @@ package dev.andrescoder.gamingapp.data.repository
 
 import android.net.Uri
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.storage.StorageReference
 import dev.andrescoder.gamingapp.core.Constants.POSTS
 import dev.andrescoder.gamingapp.core.Constants.USERS
@@ -35,6 +36,12 @@ class PostsRepositoryImpl @Inject constructor(
             GlobalScope.launch(Dispatchers.IO) {
                 val postResponse = if (snapshot != null) {
                     val posts = snapshot.toObjects(Post::class.java)
+
+                    // Set id for each post
+                    snapshot.documents.forEachIndexed { index, document ->
+                        posts[index].id = document.id
+                    }
+
                     val idUserArray = ArrayList<String>()
                     posts.forEach { post ->
                         idUserArray.add(post.idUser)
@@ -142,6 +149,34 @@ class PostsRepositoryImpl @Inject constructor(
     override suspend fun delete(idPost: String): Response<Boolean> {
         return try {
             postsRef.document(idPost).delete().await()
+            Response.Success(true)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Response.Failure(e)
+        }
+    }
+
+    override suspend fun like(
+        idPost: String,
+        idUSer: String,
+    ): Response<Boolean> {
+        return try {
+            postsRef.document(idPost)
+                .update("likes", FieldValue.arrayUnion(idUSer)).await()
+            Response.Success(true)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Response.Failure(e)
+        }
+    }
+
+    override suspend fun deleteLike(
+        idPost: String,
+        idUSer: String,
+    ): Response<Boolean> {
+        return try {
+            postsRef.document(idPost)
+                .update("likes", FieldValue.arrayRemove(idUSer)).await()
             Response.Success(true)
         } catch (e: Exception) {
             e.printStackTrace()

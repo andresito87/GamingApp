@@ -12,6 +12,7 @@ data class Post(
     var image: String = "",
     var idUser: String = "",
     var user: User? = null,
+    var likes: ArrayList<String> = ArrayList(),
 ) {
     fun toJson(): String = Gson().toJson(
         Post(
@@ -32,7 +33,7 @@ data class Post(
                 id = user?.id ?: "",
                 username = user?.username ?: "",
                 email = user?.email ?: "",
-                image= if (!user?.image.isNullOrBlank()) {
+                image = if (!user?.image.isNullOrBlank()) {
                     URLEncoder.encode(
                         user?.image,
                         StandardCharsets.UTF_8.toString()
@@ -40,7 +41,8 @@ data class Post(
                 } else {
                     ""
                 }
-            )
+            ),
+            likes
         )
     )
 
